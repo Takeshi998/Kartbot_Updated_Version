@@ -4,7 +4,7 @@ Bot de Discord para el servidor SRB2Kart-Brasil.
 
 ## Dependencias
 
-- Python 3.8+ (+ `discord.py`,` psutil`,`datetime `,`asyncio `,` requests,`` requests`,` pathlib`)
+- Python 3.8+ (+ `discord.py`,` psutil`,`datetime `,`asyncio `,`requests,`,`requests`,`pathlib`)
 - `screen`
 - `cosas`
 
