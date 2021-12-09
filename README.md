@@ -59,6 +59,8 @@ Bot de Discord para el servidor SRB2Kart.
 
 borre `[texto de ejemplo]` menos las comas y comillas,de lo contrario el bot fallara espectacularmente
 
+## Add-ons utiles para el bot (agregar a la carpeta donde configuro su servidor y agregarlo al kartserv.cfg)
+
 - `KL_uglyhitfeed_v0.5b-discord.lua`- edite este archivo .lua con los nombres de sus enojis y sus resoectivas ids
 - `notify_skin_change0.lua` - este otro archivo .lua si se agrega al servidor mostrara los avatares de "webhook_base_avatar_url": "https://kart.raphaelgoul.art/static/webhook_avatars/"
 - `KL_printresults_v1.2.lua` - muestra los resultados de la carrera
