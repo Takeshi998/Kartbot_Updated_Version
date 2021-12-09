@@ -56,3 +56,5 @@ Bot de Discord para el servidor SRB2Kart.
 
 - `k!restart` - Reinicia el servidor
 - `k!command | command <command>` - Ejecuta un comando
+
+borre `[texto de ejemplo]` menos las comas y comillas,de lo contrario el bot fallara espectacularmente
