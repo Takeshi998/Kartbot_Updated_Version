@@ -10,7 +10,7 @@ Bot de Discord para el servidor SRB2Kart.
 
 ## Uso
 
-- Copie el archivo `kartbot_config.template.json` en` kartbot_config.json` y establezca los valores apropiados
+- Renombre el archivo `kartbot_config.template.json` como ` kartbot_config.json` y establezca los valores apropiados (de hecho ya esta hecho)
 - Inicie el servidor usando `screen -dmS server / path / do / srb2kart -dedicated &`
 - Ejecute `python3.8 kartbot.py`
 
