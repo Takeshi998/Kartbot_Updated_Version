@@ -75,8 +75,8 @@ async def chat_bridge():
                                         )
                                 embed = discord.Embed(color=0x000099E1)
                                 embed.title = "Map is now " + mapid + ":" + mapname
-                                embed.set_image(url="http://kart.raphaelgoul.art/static/images/" + mapid + "-kart.png")
-                                embed.url = "http://kart.raphaelgoul.art/maps/" + mapid + ":" + mapname
+                                embed.set_image(url="http://srb2kbr.com/static/images/" + mapid + "-kart.png")
+                                embed.url = "http://srb2kbr.com/maps/" + mapid + ":" + mapname
                                 embed.url = embed.url.replace(" ", "%20")
                                 try:
                                     await bot.get_channel(
@@ -241,7 +241,7 @@ async def chat_bridge():
 
 async def delete_tmp():
     while True:
-        #await bot.change_presence(activity=discord.Game(name="kart.raphaelgoul.art"))
+        #await bot.change_presence(activity=discord.Game(name="srb2kbr.com"))
         files = [
             config["server_folder_path"] + "tmp/" + f
             for f in os.listdir(config["server_folder_path"] + "tmp")
@@ -294,13 +294,13 @@ async def on_ready():
         bridge_running = True
 
 
-@bot.command(help="Manda o IP do servidor")
+@bot.command(help="Manda la IP del servidor")
 async def ip(ctx):
     await ctx.send(config["ip_message"])
 
 
 
-@bot.command(help="Reinicia o servidor", checks=[is_admin])
+@bot.command(help="Reinicia el servidor", checks=[is_admin])
 async def restart(ctx):
     os.system(f"pkill {config['server_executable_name']}")
     if config["enable_dkartconfig_corruption_workaround"]:
@@ -309,14 +309,14 @@ async def restart(ctx):
                 config["backup_dkartconfig_path"], config["dkartconfig_path"]
             )  # copies config backup over original config file, incase the original file gets corrupted
         except FileNotFoundError:
-            print("Não foi possível copiar o backup do dkartconfig")
+            print("No se puede copiar la copia de seguridad de dkartconfig")
     if config["enable_log_backup"]:
         try:
             shutil.copyfile(
                 config["log_path"], config["backup_log_path"]
             )  # creates a backup of the log, so it can be analyzed after a server restart
         except FileNotFoundError:
-            print("Não foi possível copiar o backup do dkartconfig")
+            print("No se puede copiar la copia de seguridad de dkartconfig")
     os.system(
         f"screen -dmS {config['screen_name']} {config['server_executable_name']} {config['server_executable_args']}"
     )
@@ -324,7 +324,7 @@ async def restart(ctx):
 
 
 @bot.command(
-    help="Executa um comando no servidor", checks=[is_admin], aliases=["comando", "cmd"]
+    help="Ejecuta un comando en el servidor", checks=[is_admin], aliases=["comando", "cmd"]
 )
 async def command(ctx, *, cmd):
     # filtro retirado porque so vai ser executado dentro do jogo 
@@ -333,12 +333,12 @@ async def command(ctx, *, cmd):
     with open(path, "w") as f:
         f.write(cmd)
     os.system(
-        f"screen -S {config['screen_name']} -p 0 -X stuff \"exec tmp/tmp{ctx.message.id}.cfg^M\""
+        f"screen -S {config['screen_name']} -p 0 -X stuff \"exec tmp{ctx.message.id}.cfg^M\""
     )
-    await ctx.send("Comando executado")
+    await ctx.send("Comando ejecutado")
 
 @bot.command(
-    help="Manda informações sobre o servidor e os jogadores conectados",
+    help="Enviar información sobre el servidor y los jugadores conectados",
     aliases=["info", "players"],
 )
 async def status(ctx, *, server=None):
@@ -346,13 +346,13 @@ async def status(ctx, *, server=None):
     uptime = 0 
     if server:
         if server.lower().startswith("vanilla"):
-            server_url = "http://kart.raphaelgoul.art/api/server_browser?ip=tocadorio.ddns.net&port=30100"
+            server_url = "http://srb2kbr.com/api/server_browser?ip=tocadorio.ddns.net&port=30100"
         if server.lower().startswith("battle") or server.lower().startswith("batalha"):
-            server_url = "http://kart.raphaelgoul.art/api/server_browser?ip=tocadorio.ddns.net&port=30200"
+            server_url = "http://srb2kbr.com/api/server_browser?ip=tocadorio.ddns.net&port=30200"
         if server.lower().startswith("tsr"):
-            server_url = "http://kart.raphaelgoul.art/api/server_browser?ip=tocadorio.ddns.net&port=30300"
+            server_url = "http://srb2kbr.com/api/server_browser?ip=tocadorio.ddns.net&port=30300"
         if server.lower().startswith("juice") or server.lower().startswith("suco"):
-            server_url = "http://kart.raphaelgoul.art/api/server_browser?ip=srb2k.mooo.com&port=5029"
+            server_url = "http://srb2kbr.com/api/server_browser?ip=srb2k.mooo.com&port=5029"
         with urllib.request.urlopen(server_url) as url:
             data = json.loads(url.read().decode())
             playerslist = '\u200B'
@@ -365,13 +365,13 @@ async def status(ctx, *, server=None):
                 else:
                     playerslist += "· " + "*" + str(i['name']) + "*\n"
             battleembed = discord.Embed(color=0x00FF00)
-            battleembed.set_image(url="http://kart.raphaelgoul.art/static/images/" + data['level']['name'] + "-kart.png")
+            battleembed.set_image(url="http://srb2kbr.com/static/images/" + data['level']['name'] + "-kart.png")
             battleembed.add_field(
-                name = "Players " + str(data['players']['count']) + "/" + str(data['players']['max']),
+                name = "Jugadores " + str(data['players']['count']) + "/" + str(data['players']['max']),
                 value = playerslist,
                 inline = False,
             )
-            battleembed.add_field(name="Mapa", value=data['level']['name'] + ": " + data['level']['title'], inline=True)
+            battleembed.add_field(name="Mapa Actual", value=data['level']['name'] + ": " + data['level']['title'], inline=True)
             await ctx.reply(embed=battleembed, mention_author=False)
             return
     try:
@@ -389,7 +389,7 @@ async def status(ctx, *, server=None):
     players = []
     specs = []
     map_ = "???"
-    mode = "???"
+    mode = "Carrera"
 
     if status == "ON":
         os.system(
@@ -451,11 +451,11 @@ async def status(ctx, *, server=None):
         )
 
         embed = discord.Embed(color=0x00FF00 if status == "ON" else 0xFF0000)
-        embed.set_image(url="http://kart.raphaelgoul.art/static/images/" + mapid + "-kart.png")
+        embed.set_image(url="http://srb2kbr.com/static/images/" + mapid + "-kart.png")
         embed.add_field(
-            name="Status", value="✅ ON" if status == "ON" else "❌ OFF", inline=True
+            name="Estado", value="✅ Encendido" if status == "ON" else "❌ Apagado", inline=True
         )
-        embed.add_field(name="Uptime", value=formatted_uptime, inline=True)
+        embed.add_field(name="Tiempo de actividad", value=formatted_uptime, inline=True)
         embed.add_field(name="\u200B", value="\u200B", inline=True)
         embed.add_field(name="CPU", value=f"{psutil.cpu_percent()}%", inline=True)
         embed.add_field(
@@ -463,21 +463,21 @@ async def status(ctx, *, server=None):
         )
         embed.add_field(name="\u200B", value="\u200B", inline=True)
         if status == "ON":
-            embed.add_field(name="Modo", value=mode, inline=False)
+            embed.add_field(name="Modo de juego", value=mode, inline=False)
             embed.add_field(
-                name=f"Players {len(players)+len(specs)}/{config['server_max_players']}",
+                name=f"Jugadores {len(players)+len(specs)}/{config['server_max_players']}",
                 value=discord.utils.escape_mentions(formatted_players),
                 inline=False,
             )
-            embed.add_field(name="Mapa", value=map_, inline=True)
+            embed.add_field(name="Mapa Actual", value=map_, inline=True)
 
         await ctx.reply(embed=embed, mention_author=False)
     else:
-        await ctx.reply("Não foi possível ler o log do servidor", mention_author=False)
+        await ctx.reply("No se puede leer el log del servidor", mention_author=False)
 
 
 
-@bot.command(help="Exibe uma determinada tag")
+@bot.command(help="Muestra una determinada tag")
 async def tag(ctx, *, tag):
     LEFT_EMOJI = "\u25C0"
     RIGHT_EMOJI = "\u25B6"
@@ -589,7 +589,7 @@ async def tag(ctx, *, tag):
 
             index = math.ceil(i / list_beg)
             if index == 0:
-                await ctx.reply("Você não criou nenhuma tag")
+                await ctx.reply("Usted no ah creado ninguna tag")
                 return
 
             if (list_number > index):
@@ -628,7 +628,7 @@ async def tag(ctx, *, tag):
                     list_number2 = index
 
                 index = math.ceil(i / list_beg)
-                embed.title = "Suas Tags {0} / {1}".format(list_number2, index)
+                embed.title = "Sus Tags {0} / {1}".format(list_number2, index)
                 embed.description = tags
                 await message.edit(embed=embed, mention_author=False)
 
@@ -661,11 +661,11 @@ async def tag(ctx, *, tag):
                 if ctx.message.attachments:
                     with open(config["tag_path"] + ftag, "w") as f:
                         f.write(f"{ctx.author.id}\n{ctx.message.attachments[0].url}")
-                        await ctx.reply("Tag: \"{0}\" criada.".format(ftag), mention_author=False);
+                        await ctx.reply("Tag: \"{0}\" creada.".format(ftag), mention_author=False);
                 else:
-                        await ctx.reply("Não é possivel criar uma tag sem anexo.", mention_author=False);
+                        await ctx.reply("No es posible crear un tag sin un archivo adjunto.", mention_author=False);
             else:
-                await ctx.reply("Erro: Tag: \"{0}\" ja criada.".format(ftag), mention_author=False);
+                await ctx.reply("Error: Tag: \"{0}\" ya creada.".format(ftag), mention_author=False);
 
     elif tag.startswith("delete"):
         if config["bot_commands_channel_id"] == ctx.channel.id:
@@ -675,17 +675,17 @@ async def tag(ctx, *, tag):
                     if author.isnumeric and author != '':
                         if ctx.author.id == int(author) or is_admin(ctx):
                             os.remove(config["tag_path"] + ftag)
-                            await ctx.reply("Tag: \"{0}\" deletada.".format(ftag), mention_author=False)
+                            await ctx.reply("Tag: \"{0}\" borrada.".format(ftag), mention_author=False)
                         else:
-                            await ctx.reply("Apenas o autor dessa tag pode deletar-la.", mention_author=False)
+                            await ctx.reply("Sólo el autor de este tag puede eliminarla.", mention_author=False)
             else:
-                await ctx.reply("Tag: \"{0}\" não existe.".format(ftag), mention_author=False)
+                await ctx.reply("Tag: \"{0}\" no existe.".format(ftag), mention_author=False)
     else:
         if os.path.exists(config["tag_path"] + tag.replace("/","")):
             with open(config["tag_path"] + tag.replace("/",""), "r") as f:
                 content = f.read().split("\n")[1]
                 await ctx.reply(content, mention_author=False)
         else:
-            await ctx.reply("Tag: \"{0}\" não existe.".format(tag))
+            await ctx.reply("Tag: \"{0}\" no existe.".format(tag))
 
 bot.run(config["token"])
